@@ -17,15 +17,22 @@ contract SocalSale is ERC721Enumerable, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
 
-    event UpdateNftOwner(uint256 tokenId, address prevOwner, address newOwner, uint256 time);
-    event WhitelistingNft(address tokenAddress, address owner, uint256 tokenId, uint256 price, uint256 time);
+    event UpdateNftOwner(uint256 tokenId, address prevOwner, address newOwner, bool status, uint256 time);
+    event WhitelistingNft(
+        address tokenAddress,
+        address owner,
+        uint256 tokenId,
+        uint256 price,
+        bool status,
+        uint256 time
+    );
     event RemoveNft(address owner, uint256 tokenId);
 
     Counters.Counter private _tokenIdTracker;
     address public primaryToken;
     address public protocolToken;
 
-    address public wallet = 0x003CEBfB082C6aCB4B491Be77f431b07EA2ab2dD;
+    address public wallet = 0xdD15D2650387Fb6FEDE27ae7392C402a393F8A37;
 
     uint256 public MAX_SUPPLY = 1511;
     uint256 public finalMintAmount = 1550;
@@ -107,7 +114,7 @@ contract SocalSale is ERC721Enumerable, Ownable {
             require(prices[i] > 0, "Zero amount cannot be allow");
             require(ownerOf(tokenIds[i]) == _msgSender(), "NA");
             tokenIdToPrice[tokenIds[i]] = prices[i];
-            emit WhitelistingNft(address(protocolToken), msg.sender, tokenIds[i], prices[i], block.timestamp);
+            emit WhitelistingNft(address(protocolToken), msg.sender, tokenIds[i], prices[i], true, block.timestamp);
         }
     }
 
@@ -128,7 +135,7 @@ contract SocalSale is ERC721Enumerable, Ownable {
 
         IERC20(protocolToken).transferFrom(_msgSender(), ownerOf(tokenId), tokenIdToPrice[tokenId]);
 
-        emit UpdateNftOwner(tokenId, ownerOf(tokenId), _msgSender(), block.timestamp);
+        emit UpdateNftOwner(tokenId, ownerOf(tokenId), _msgSender(), false, block.timestamp);
 
         _transfer(ownerOf(tokenId), _msgSender(), tokenId);
         tokenIdToPrice[tokenId] = 0;
