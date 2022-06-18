@@ -25,7 +25,7 @@ contract SocalSale is ERC721Enumerable, Ownable {
     address public primaryToken;
     address public protocolToken;
 
-    address public wallet = 0xdD15D2650387Fb6FEDE27ae7392C402a393F8A37;
+    address public wallet = 0x003CEBfB082C6aCB4B491Be77f431b07EA2ab2dD;
 
     uint256 public MAX_SUPPLY = 1511;
     uint256 public finalMintAmount = 1550;
